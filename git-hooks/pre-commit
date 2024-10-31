@@ -1,0 +1,24 @@
+#!/bin/bash
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+NC="\033[0m"
+
+# Get all staged files
+staged_files=$(git diff --cached --name-only --diff-filter=d | grep -E "\.js$|\.jsx$|\.ts$|\.tsx$")
+
+# Run Prettier on all staged files
+echo "Running Prettier..."
+./node_modules/.bin/prettier --write $staged_files
+prettier_exit_code=$?
+
+# Run ESLint on all staged files
+echo "Running ESLint..."
+./node_modules/.bin/eslint $staged_files
+eslint_exit_code=$?
+
+if [ $prettier_exit_code -eq 0 ] && [ $eslint_exit_code -eq 0 ]; then
+  echo -e "${GREEN} ✔ Code is properly formatted and linted. Proceeding with commit. ${NC}"
+else
+  echo -e "${RED} ❌ Commit failed due to formatting or linting errors. ${NC}"
+  exit 1
+fi
