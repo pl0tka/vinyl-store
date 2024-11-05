@@ -17,6 +17,13 @@ export class UserRepository {
         });
     }
 
+    async findById(id: string): Promise<User | null> {
+        return await this._repository.findOne({
+            where: { id },
+            relations: ['roles'],
+        });
+    }
+
     async create(user: User): Promise<void> {
         const newUser = this._repository.create(user);
         await this._repository.save(newUser);

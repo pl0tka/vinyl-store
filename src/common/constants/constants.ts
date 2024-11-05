@@ -11,6 +11,8 @@ export const ERROR_MESSAGES = {
     USER_EMAIL_EXISTS: 'User with this email already exists',
     USER_CREATION_FAILED: 'Could not create user',
     USER_NOT_FOUND: 'User not found',
+    USER_WRONG_LOGIN_METHOD:
+        'A user with this email already exists but is registered with a different login method',
     UNAUTHORIZED: 'Invalid credentials',
     ROLE_NOT_FOUND: 'Role not found',
 };

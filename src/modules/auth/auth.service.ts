@@ -1,4 +1,6 @@
 import {
+    BadRequestException,
+    ConflictException,
     Injectable,
     NotFoundException,
     UnauthorizedException,
@@ -13,14 +15,8 @@ import { ERROR_MESSAGES } from '../../common/constants/constants.js';
 import { RoleService } from '../role/role.service.js';
 import { Role as RoleEntity } from '../../database/entities/Role.js';
 import { Role } from '../../guards/roles.enum.js';
+import { GoogleLoginDto } from './dto/google-login-dto.js';
 import { v4 as uuidv4 } from 'uuid';
-
-interface Profile {
-    email: string;
-    firstName: string;
-    lastName: string;
-    avatar: string;
-}
 
 @Injectable()
 export class AuthService {
@@ -41,6 +37,7 @@ export class AuthService {
         const newUser: UserEntity = {
             ...signupDto,
             id: uuidv4(),
+            password: await PasswordUtil.hashPassword(signupDto.password),
             roles: [userRole],
             vinyls: [],
             reviews: [],
@@ -68,6 +65,10 @@ export class AuthService {
             throw new NotFoundException(ERROR_MESSAGES.USER_NOT_FOUND);
         }
 
+        if (user && !user.password) {
+            throw new ConflictException(ERROR_MESSAGES.USER_WRONG_LOGIN_METHOD);
+        }
+
         const isPasswordCorrect: boolean = await PasswordUtil.validatePassword(
             password,
             user?.password
@@ -80,28 +81,39 @@ export class AuthService {
         return user;
     }
 
-    async validateUserGoogle(profile: Profile): Promise<UserEntity> {
-        const { email, firstName, lastName, avatar } = profile;
-
-        let user = await this._userService.findByEmail(email);
-
-        if (!user) {
-            const newUser = {
-                id: uuidv4(),
-                email,
-                firstName,
-                lastName,
-                avatar,
-                password: null,
-                birthday: null,
-                roles: [],
-                vinyls: [],
-                reviews: [],
-            };
-            await this._userService.create(newUser);
-            user = newUser;
+    async logInGoogle(googleLoginDto: GoogleLoginDto) {
+        if (!googleLoginDto) {
+            throw new BadRequestException();
         }
 
-        return user;
+        const { id, email, firstName, lastName, avatar } = googleLoginDto;
+        let user = await this._userService.findById(id);
+        if (user) {
+            return await this.login(user);
+        }
+
+        user = await this._userService.findByEmail(email);
+        if (user) {
+            throw new ConflictException(ERROR_MESSAGES.USER_WRONG_LOGIN_METHOD);
+        }
+
+        const userRole: RoleEntity = await this._roleService.findByName(
+            Role.User
+        );
+        const newUser = {
+            id,
+            email,
+            firstName,
+            lastName,
+            avatar,
+            password: null,
+            birthday: null,
+            roles: [userRole],
+            vinyls: [],
+            reviews: [],
+        };
+        await this._userService.create(newUser);
+
+        return await this.login(newUser);
     }
 }

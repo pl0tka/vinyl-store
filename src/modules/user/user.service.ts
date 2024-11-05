@@ -15,6 +15,10 @@ export class UserService {
         return await this._userRepository.findByEmail(email);
     }
 
+    async findById(id: string): Promise<User | null> {
+        return await this._userRepository.findById(id);
+    }
+
     async create(user: User): Promise<void> {
         try {
             await this._userRepository.create(user);
