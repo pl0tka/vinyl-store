@@ -15,6 +15,8 @@ export const ERROR_MESSAGES = {
         'A user with this email already exists but is registered with a different login method',
     UNAUTHORIZED: 'Invalid credentials',
     ROLE_NOT_FOUND: 'Role not found',
+    VINYL_NOT_FOUND: 'Vinyl not found',
+    FORBIDDEN: 'No permission to access this resourse',
 };
 
 // hash password

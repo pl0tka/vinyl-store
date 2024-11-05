@@ -8,13 +8,13 @@ export class CreateTables1730576859633 implements MigrationInterface {
             `CREATE TABLE \`users\` (\`id\` varchar(255) NOT NULL, \`firstName\` varchar(20) NOT NULL, \`lastName\` varchar(20) NOT NULL, \`email\` varchar(500) NOT NULL UNIQUE, \`password\` varchar(500) NULL, \`birthday\` date NULL, \`avatar\` varchar(2048) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
         );
         await queryRunner.query(
-            `CREATE TABLE \`vinyls\` (\`id\` varchar(255) NOT NULL, \`name\` varchar(50) NOT NULL, \`author\` varchar(100) NOT NULL, \`description\` varchar(2000) NOT NULL, \`price\` decimal(10,2) NOT NULL, \`coverImage\` varchar(2048) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
+            `CREATE TABLE \`vinyls\` (\`id\` int NOT NULL AUTO_INCREMENT, \`name\` varchar(50) NOT NULL, \`author\` varchar(100) NOT NULL, \`description\` varchar(2000) NOT NULL, \`price\` decimal(10,2) NOT NULL, \`coverImage\` varchar(2048) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
         );
         await queryRunner.query(
             `CREATE TABLE \`roles\` (\`id\` int NOT NULL AUTO_INCREMENT, \`name\` varchar(50) NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
         );
         await queryRunner.query(
-            `CREATE TABLE \`reviews\` (\`id\` int NOT NULL AUTO_INCREMENT, \`score\` int NOT NULL, \`comment\` varchar(5000) NULL, \`vinylId\` varchar(255) NULL, \`userId\` varchar(255) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
+            `CREATE TABLE \`reviews\` (\`id\` int NOT NULL AUTO_INCREMENT, \`score\` int NOT NULL, \`comment\` varchar(5000) NULL, \`vinylId\` int NULL, \`userId\` varchar(255) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
         );
         await queryRunner.query(
             `CREATE TABLE \`roles_users_users\` (\`rolesId\` int NOT NULL, \`usersId\` varchar(255) NOT NULL, INDEX \`IDX_6baa1fce24dde516186c4f0269\` (\`rolesId\`), INDEX \`IDX_391282056f6da8665b38480a13\` (\`usersId\`), PRIMARY KEY (\`rolesId\`, \`usersId\`)) ENGINE=InnoDB`

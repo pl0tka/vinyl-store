@@ -1,10 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Review } from './index.js';
 
 @Entity({ name: 'vinyls' })
 export class Vinyl {
-    @PrimaryColumn()
-    id: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column({ length: 50 })
     name: string;
