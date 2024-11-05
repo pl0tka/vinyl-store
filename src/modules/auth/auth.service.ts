@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { WinstonLogger } from '../../logger/logger.js';
-import { SignupDto } from './dto/signup-dto.js';
+import { SignupDto } from './dto/signup.dto.js';
 import { UserService } from '../user/user.service.js';
 import { User as UserEntity } from '../../database/entities/index.js';
 import { PasswordUtil } from '../../utils/password.util.js';
@@ -15,7 +15,7 @@ import { ERROR_MESSAGES } from '../../common/constants/constants.js';
 import { RoleService } from '../role/role.service.js';
 import { Role as RoleEntity } from '../../database/entities/Role.js';
 import { Role } from '../../guards/roles.enum.js';
-import { GoogleLoginDto } from './dto/google-login-dto.js';
+import { GoogleLoginDto } from './dto/google-login.dto.js';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -47,8 +47,12 @@ export class AuthService {
     }
 
     async login(user: any) {
-        const payload = { email: user.email, sub: user.id };
-        console.log(payload);
+        const roles = user.roles?.map((role: RoleEntity) => role.name);
+        const payload = {
+            email: user.email,
+            sub: user.id,
+            roles,
+        };
 
         return {
             access_token: await this._jwtService.signAsync(payload),
@@ -88,6 +92,8 @@ export class AuthService {
 
         const { id, email, firstName, lastName, avatar } = googleLoginDto;
         let user = await this._userService.findById(id);
+        console.log(user);
+
         if (user) {
             return await this.login(user);
         }

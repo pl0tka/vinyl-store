@@ -7,6 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Role } from './roles.enum.js';
 import { ROLES_KEY } from './roles.decorator.js';
+import { ERROR_MESSAGES } from '../common/constants/constants.js';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -23,13 +24,10 @@ export class RolesGuard implements CanActivate {
         const { user } = context.switchToHttp().getRequest();
 
         if (
-            !user ||
-            !user.roles ||
+            !user?.roles ||
             !requiredRoles.some((role) => user.roles.includes(role))
         ) {
-            throw new ForbiddenException(
-                'No permission to access this resourse'
-            );
+            throw new ForbiddenException(ERROR_MESSAGES.FORBIDDEN);
         }
 
         return true;
