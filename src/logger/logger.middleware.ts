@@ -1,10 +1,10 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { WinstonLogger } from './logger.js';
+import { LoggerService } from './logger.service.js';
 
 @Injectable()
 export class LogRequestMiddleware implements NestMiddleware {
-    constructor(private readonly _logger: WinstonLogger) {}
+    constructor(private readonly _logger: LoggerService) {}
 
     use(req: Request, res: Response, next: NextFunction) {
         const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;

@@ -1,28 +1,16 @@
-import { Module } from '@nestjs/common';
-import { WinstonLogger } from './logger.js';
+import { Module, Scope } from '@nestjs/common';
+import { LoggerService } from './logger.service.js';
 
 @Module({
     providers: [
         {
-            provide: WinstonLogger,
+            provide: LoggerService,
             useFactory: (logFilePath: string) => {
-                return new WinstonLogger(logFilePath);
+                return new LoggerService(logFilePath);
             },
+            scope: Scope.TRANSIENT,
         },
     ],
-    exports: [WinstonLogger],
+    exports: [LoggerService],
 })
-export class LoggerModule {
-    static forRoot(logFilePath: string) {
-        return {
-            module: LoggerModule,
-            providers: [
-                {
-                    provide: WinstonLogger,
-                    useFactory: () => new WinstonLogger(logFilePath),
-                },
-            ],
-            exports: [WinstonLogger],
-        };
-    }
-}
+export class LoggerModule {}

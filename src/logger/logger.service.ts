@@ -1,12 +1,12 @@
-import { Injectable, LoggerService } from '@nestjs/common';
+import { Injectable, LoggerService as LogService, Scope } from '@nestjs/common';
 import { createLogger, transports, format } from 'winston';
 const { combine, timestamp, printf } = format;
 
-@Injectable()
-export class WinstonLogger implements LoggerService {
+@Injectable({ scope: Scope.TRANSIENT })
+export class LoggerService implements LogService {
     private logger;
 
-    constructor(logFilePath: string) {
+    constructor(private readonly _logFile: string = 'logs/requests.log') {
         this.logger = createLogger({
             level: 'info',
             format: combine(
@@ -18,15 +18,29 @@ export class WinstonLogger implements LoggerService {
             ),
             transports: [
                 new transports.Console(),
-                new transports.File({ filename: logFilePath }),
+                new transports.File({
+                    filename: `${this._logFile}`,
+                }),
             ],
         });
     }
 
     private context: string;
 
+    private updateLogFile() {
+        if (this.context) {
+            this.logger.clear();
+            this.logger.add(
+                new transports.File({
+                    filename: `logs/${this.context}.log`,
+                })
+            );
+        }
+    }
+
     setContext(context: string) {
         this.context = context;
+        this.updateLogFile();
     }
 
     private getContext(): string {

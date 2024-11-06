@@ -3,13 +3,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { VinylModule } from './modules/vinyl/vinyl.module.js';
-import { WinstonLogger } from './logger/logger.js';
+import { LoggerService } from './logger/logger.service.js';
 import { LogRequestMiddleware } from './logger/logger.middleware.js';
 import typeorm from './config/orm.config.js';
 import serverConfig from './config/server.config.js';
 
 import { UserModule } from './modules/user/user.module.js';
 import { RoleModule } from './modules/role/role.module.js';
+import { LoggerModule } from './logger/logger.module.js';
 
 @Module({
     imports: [
@@ -26,12 +27,13 @@ import { RoleModule } from './modules/role/role.module.js';
         VinylModule,
         UserModule,
         RoleModule,
+        LoggerModule,
     ],
     providers: [
         {
-            provide: WinstonLogger,
+            provide: LoggerService,
             useFactory: () => {
-                return new WinstonLogger('logs/requests.log');
+                return new LoggerService();
             },
         },
     ],
