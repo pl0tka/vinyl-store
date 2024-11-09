@@ -7,11 +7,11 @@ import {
     Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
-import { SignupDto } from './dto/signup-dto.js';
+import { SignupDto } from './dto/signup.dto.js';
 import { LocalAuthGuard } from './guards/local-auth.guard.js';
 import { GoogleAuthGuard } from './guards/google-auth.guard.js';
 import { Public } from '../../common/decorators/public.decorator.js';
-import { GoogleLoginDto } from './dto/google-login-dto.js';
+import { GoogleLoginDto } from './dto/google-login.dto.js';
 
 @Controller('auth')
 export class AuthController {

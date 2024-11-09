@@ -19,7 +19,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard.js';
     imports: [
         UserModule,
         RoleModule,
-        LoggerModule.forRoot('logs/auth.log'),
+        LoggerModule,
         ConfigModule,
         PassportModule,
         TypeOrmModule.forFeature([User, Role]),

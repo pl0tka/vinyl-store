@@ -6,7 +6,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { WinstonLogger } from '../../logger/logger.js';
+import { LoggerService } from '../../logger/logger.service.js';
 import { SignupDto } from './dto/signup.dto.js';
 import { UserService } from '../user/user.service.js';
 import { User as UserEntity } from '../../database/entities/index.js';
@@ -21,12 +21,12 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly _logger: WinstonLogger,
+        private readonly _logger: LoggerService,
         private readonly _userService: UserService,
         private readonly _roleService: RoleService,
         private readonly _jwtService: JwtService
     ) {
-        this._logger.setContext('Auth');
+        this._logger.setContext(AuthService.name);
     }
 
     async signup(signupDto: SignupDto) {
@@ -39,8 +39,8 @@ export class AuthService {
             id: uuidv4(),
             password: await PasswordUtil.hashPassword(signupDto.password),
             roles: [userRole],
-            vinyls: [],
             reviews: [],
+            orders: [],
         };
 
         await this._userService.create(newUser);
@@ -63,7 +63,7 @@ export class AuthService {
         email: string,
         password: string
     ): Promise<UserEntity> {
-        const user = await this._userService.findByEmail(email);
+        const user = await this._userService.findByEmailWithRoles(email);
 
         if (!user) {
             throw new NotFoundException(ERROR_MESSAGES.USER_NOT_FOUND);
@@ -91,8 +91,7 @@ export class AuthService {
         }
 
         const { id, email, firstName, lastName, avatar } = googleLoginDto;
-        let user = await this._userService.findById(id);
-        console.log(user);
+        let user = await this._userService.findByIdWithRoles(id);
 
         if (user) {
             return await this.login(user);
@@ -115,8 +114,8 @@ export class AuthService {
             password: null,
             birthday: null,
             roles: [userRole],
-            vinyls: [],
             reviews: [],
+            orders: [],
         };
         await this._userService.create(newUser);
 
