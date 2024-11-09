@@ -4,14 +4,18 @@ import { GetVinylsQueryDto } from './dto/get-vinyls-query.dto.js';
 import { CreateVinylDto } from './dto/create-vinyl.dto.js';
 import { UpdateVinylDto } from './dto/update-vinyl.dto.js';
 import { ERROR_MESSAGES } from '../../common/constants/constants.js';
-import { Vinyl } from '../../database/entities/index.js';
+import { GetVinylsWithScoreAndReviewDto } from './dto/get-vinyls-with-score-and-review.dto.js';
 
 @Injectable()
 export class VinylService {
     constructor(private readonly _vinylRepository: VinylRepository) {}
 
-    async findAll(query: GetVinylsQueryDto): Promise<Vinyl[]> {
-        return await this._vinylRepository.findAll(query);
+    async findAllWithAvgScoreAndFirstReview(
+        query: GetVinylsQueryDto
+    ): Promise<GetVinylsWithScoreAndReviewDto[]> {
+        return await this._vinylRepository.findAllWithAvgScoreAndFirstReview(
+            query
+        );
     }
 
     async create(createVinylDto: CreateVinylDto): Promise<void> {

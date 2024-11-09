@@ -27,7 +27,7 @@ import { ReviewService } from '../review/review.service.js';
 import { CreateReviewDto } from '../review/dto/create-review.dto.js';
 import { Review } from '../../database/entities/Review.js';
 import { GetReviewsQueryDto } from '../review/dto/get-reviews-query.dto.js';
-import { GetVinylsWithScoreAndReviewDto } from './dto/get-vinyls-with-avg-score-and-first-review.dto.js';
+import { GetVinylsWithScoreAndReviewDto } from './dto/get-vinyls-with-score-and-review.dto.js';
 
 @Controller('vinyls')
 export class VinylController {
