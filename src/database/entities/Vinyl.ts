@@ -1,5 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Review } from './index.js';
+import {
+    Column,
+    Entity,
+    ManyToMany,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Review, Order } from './index.js';
 
 @Entity({ name: 'vinyls' })
 export class Vinyl {
@@ -23,4 +29,7 @@ export class Vinyl {
 
     @OneToMany(() => Review, (review) => review.vinyl)
     reviews: Review[];
+
+    @ManyToMany(() => Order, (order) => order.vinyls)
+    orders: Order[];
 }

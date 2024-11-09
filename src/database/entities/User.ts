@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
-import { Vinyl, Role, Review } from './index.js';
+import { Role, Review, Order } from './index.js';
 
 @Entity({ name: 'users' })
 export class User {
@@ -24,12 +24,14 @@ export class User {
     @Column({ type: 'varchar', length: 2048, nullable: true })
     avatar: string;
 
-    @ManyToMany(() => Role, (role) => role.users)
+    @ManyToMany(() => Role, (role) => role.users, { onDelete: 'CASCADE' })
     roles: Role[];
 
-    @OneToMany(() => Vinyl, (vinyl) => vinyl.author)
-    vinyls: Vinyl[];
-
-    @OneToMany(() => Review, (review) => review.user)
+    @OneToMany(() => Review, (review) => review.user, { onDelete: 'CASCADE' })
     reviews: Review[];
+
+    @OneToMany(() => Order, (order) => order.user, {
+        onDelete: 'CASCADE',
+    })
+    orders: Order[];
 }
