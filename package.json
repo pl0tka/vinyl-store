@@ -21,7 +21,7 @@
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "typeorm": "node ./node_modules/typeorm/cli",
         "migration:run": "npm run typeorm migration:run -- -d dist/config/orm.config.js",
-        "migration:gen": "npm run typeorm -- -d dist/src/config/orm.config.js migration:generate ./src/database/migrations/$npm_config_name",
+        "migration:gen": "npm run typeorm -- -d dist/config/orm.config.js migration:generate ./src/database/migrations/$npm_config_name",
         "migration:create": "npm run typeorm -- migration:create ./src/database/migrations/$npm_config_name",
         "migration:revert": "npm run typeorm -- -d dist/config/orm.config.js migration:revert"
     },
@@ -29,6 +29,7 @@
         "@nestjs/common": "^10.0.0",
         "@nestjs/config": "^3.3.0",
         "@nestjs/core": "^10.0.0",
+        "@nestjs/event-emitter": "^2.1.1",
         "@nestjs/jwt": "^10.2.0",
         "@nestjs/passport": "^10.0.3",
         "@nestjs/platform-express": "^10.0.0",
@@ -46,6 +47,7 @@
         "passport-local": "^1.0.0",
         "reflect-metadata": "^0.2.0",
         "rxjs": "^7.8.1",
+        "stripe": "^17.3.1",
         "uuid": "^11.0.2",
         "winston": "^3.15.0"
     },

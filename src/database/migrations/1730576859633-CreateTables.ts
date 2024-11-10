@@ -17,7 +17,7 @@ export class CreateTables1730576859633 implements MigrationInterface {
             `CREATE TABLE \`reviews\` (\`id\` int NOT NULL AUTO_INCREMENT, \`score\` int NOT NULL, \`comment\` varchar(5000) NULL, \`vinylId\` int NULL, \`userId\` varchar(255) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
         );
         await queryRunner.query(
-            `CREATE TABLE \`orders\` (\`id\` int NOT NULL AUTO_INCREMENT, \`orderDate\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, \`userId\` varchar(255) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
+            `CREATE TABLE \`orders\` (\`id\` int NOT NULL AUTO_INCREMENT, \`orderDate\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, \`price\` decimal(10,2) NOT NULL, \`userId\` varchar(255) NULL, \`status\` ENUM('pending', 'success', 'cancelled') NOT NULL DEFAULT 'pending', PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
         );
         await queryRunner.query(
             `CREATE TABLE \`roles_users_users\` (\`rolesId\` int NOT NULL, \`usersId\` varchar(255) NOT NULL, INDEX \`IDX_6baa1fce24dde516186c4f0269\` (\`rolesId\`), INDEX \`IDX_391282056f6da8665b38480a13\` (\`usersId\`), PRIMARY KEY (\`rolesId\`, \`usersId\`)) ENGINE=InnoDB`

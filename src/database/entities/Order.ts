@@ -7,6 +7,7 @@ import {
     ManyToMany,
 } from 'typeorm';
 import { User, Vinyl } from './index.js';
+import { OrderStatus } from './constants/order-status.enum.js';
 
 @Entity({ name: 'orders' })
 export class Order {
@@ -22,4 +23,10 @@ export class Order {
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     orderDate: Date;
+
+    @Column({ type: 'decimal', precision: 10, scale: 2 })
+    price: number;
+
+    @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING })
+    status: OrderStatus;
 }
