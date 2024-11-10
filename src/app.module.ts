@@ -4,11 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LogRequestMiddleware } from './logger/logger.middleware.js';
 import typeorm from './config/orm.config.js';
 import serverConfig from './config/server.config.js';
+import mailerConfig from './config/nodemailer.config.js';
 import { UserModule } from './modules/user/user.module.js';
 import { RoleModule } from './modules/role/role.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { VinylModule } from './modules/vinyl/vinyl.module.js';
 import { OrderModule } from './modules/order/order.module.js';
+import { MailerModule } from './modules/mailer/mailer.module.js';
 import { StripeModule } from './modules/stripe/stripe.module.js';
 import { LoggerService } from './logger/logger.service.js';
 import { LoggerModule } from './logger/logger.module.js';
@@ -19,7 +21,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
         EventEmitterModule.forRoot(),
         ConfigModule.forRoot({
             isGlobal: true,
-            load: [typeorm, serverConfig],
+            load: [typeorm, serverConfig, mailerConfig],
         }),
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
@@ -33,6 +35,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
         OrderModule,
         StripeModule,
         LoggerModule,
+        MailerModule,
     ],
     providers: [
         {

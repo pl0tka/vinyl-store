@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
 export class PaymentFailedEvent {
-    orderId: string;
+    constructor(
+        public orderId: string,
+        public userEmail: string
+    ) {}
 }

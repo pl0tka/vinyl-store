@@ -16,7 +16,10 @@ export const ERROR_MESSAGES = {
     UNAUTHORIZED: 'Invalid credentials',
     ROLE_NOT_FOUND: 'Role not found',
     VINYL_NOT_FOUND: 'Vinyl not found',
+    REVIEW_NOT_FOUND: 'Review not found',
     FORBIDDEN: 'No permission to access this resourse',
+    EMAIL_SENT: 'Email sent successfully',
+    EMAIL_SENDING_FAILED: 'Email sending failed',
 };
 
 // hash password

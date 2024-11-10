@@ -7,6 +7,7 @@ import { PaymentSuccessEvent } from '../../events/payment-success.event.js';
 import { PaymentFailedEvent } from '../../events/payment-failed.event.js';
 import { CheckoutSessionQueryDto } from './dto/checkout-session-query.dto.js';
 import { PaymentStatus } from './constants/constants.js';
+import { EVENTS } from '../../events/constants/events.js';
 
 @Controller('stripe')
 export class StripeController {
@@ -34,15 +35,18 @@ export class StripeController {
         const { session_id: sessionId, status } = query;
         const session = await this._stripeService.getSession(sessionId);
         const orderId = session.metadata.order_id;
+        const userEmail = session.customer_email;
 
         if (status === PaymentStatus.SUCCESS) {
-            const paymentSuccessEvent = new PaymentSuccessEvent();
-            paymentSuccessEvent.orderId = orderId;
-            this._eventEmitter.emit('payment.success', paymentSuccessEvent);
+            this._eventEmitter.emit(
+                EVENTS.PAYMENT_SUCCESS,
+                new PaymentSuccessEvent(orderId, userEmail)
+            );
         } else {
-            const paymentFailedEvent = new PaymentFailedEvent();
-            paymentFailedEvent.orderId = orderId;
-            this._eventEmitter.emit('payment.failed', paymentFailedEvent);
+            this._eventEmitter.emit(
+                EVENTS.PAYMENT_FAILED,
+                new PaymentFailedEvent(orderId, userEmail)
+            );
         }
     }
 }
