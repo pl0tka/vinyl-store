@@ -43,6 +43,7 @@ export class AuthService {
             roles: [userRole],
             reviews: [],
             orders: [],
+            changeLogs: [],
         };
 
         await this._userService.create(newUser);
@@ -118,6 +119,7 @@ export class AuthService {
             roles: [userRole],
             reviews: [],
             orders: [],
+            changeLogs: [],
         };
         await this._userService.create(newUser);
 

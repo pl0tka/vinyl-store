@@ -12,7 +12,6 @@ import { VinylModule } from './modules/vinyl/vinyl.module.js';
 import { OrderModule } from './modules/order/order.module.js';
 import { MailerModule } from './modules/mailer/mailer.module.js';
 import { StripeModule } from './modules/stripe/stripe.module.js';
-import { LoggerService } from './logger/logger.service.js';
 import { LoggerModule } from './logger/logger.module.js';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 
@@ -36,14 +35,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
         StripeModule,
         LoggerModule,
         MailerModule,
-    ],
-    providers: [
-        {
-            provide: LoggerService,
-            useFactory: () => {
-                return new LoggerService();
-            },
-        },
     ],
 })
 export class AppModule implements NestModule {

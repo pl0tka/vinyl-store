@@ -29,6 +29,9 @@ export class CreateTables1730576859633 implements MigrationInterface {
             `CREATE TABLE \`token_blacklist\` (\`id\` int NOT NULL AUTO_INCREMENT, \`token\` varchar(255) NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
         );
         await queryRunner.query(
+            ` CREATE TABLE \`change_logs\` (\`id\` INT NOT NULL AUTO_INCREMENT, \`actionType\` ENUM('create', 'update', 'delete') NOT NULL, \`entity\` VARCHAR(255) NOT NULL, \`userId\` VARCHAR(255) NOT NULL, \`oldData\` JSON NULL, \`newData\` JSON NOT NULL, \`changeDate\` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (\`id\`), CONSTRAINT \`FK_user_id\` FOREIGN KEY (\`userId\`) REFERENCES \`users\` (\`id\`) ON DELETE CASCADE) ENGINE=InnoDB`
+        );
+        await queryRunner.query(
             `ALTER TABLE \`reviews\` ADD CONSTRAINT \`FK_824ac8e8ce880d78453bbdca9cb\` FOREIGN KEY (\`vinylId\`) REFERENCES \`vinyls\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`
         );
         await queryRunner.query(
@@ -96,5 +99,6 @@ export class CreateTables1730576859633 implements MigrationInterface {
         );
         await queryRunner.query(`DROP TABLE \`users\``);
         await queryRunner.query(`DROP TABLE \`token_blacklist\``);
+        await queryRunner.query(`DROP TABLE \`change_logs\``);
     }
 }

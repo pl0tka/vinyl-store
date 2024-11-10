@@ -9,6 +9,7 @@ import { LoggerService } from '../../logger/logger.service.js';
 import { Review } from '../../database/entities/index.js';
 import { ERROR_MESSAGES } from '../../common/constants/constants.js';
 import { GetReviewsQueryDto } from './dto/get-reviews-query.dto.js';
+import { ActionType } from '../../database/entities/ChangeLog.js';
 
 @Injectable()
 export class ReviewService {
@@ -39,12 +40,20 @@ export class ReviewService {
         createReviewDto: CreateReviewDto
     ): Promise<void> {
         try {
-            console.log('vinyl id', vinylId, 'userid', userId, createReviewDto);
-
             await this._reviewRepository.create(
                 vinylId,
                 userId,
                 createReviewDto
+            );
+            await this._logger.logToDB(
+                ActionType.CREATE,
+                'Review',
+                userId,
+                null,
+                {
+                    vinylId,
+                    createReviewDto,
+                }
             );
         } catch (err) {
             this._logger.error(err.message);
