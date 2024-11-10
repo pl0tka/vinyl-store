@@ -5,11 +5,8 @@ import {
 } from '@nestjs/common';
 import Stripe from 'stripe';
 import { ConfigService } from '@nestjs/config';
-import {
-    STRIPE_ERRORS,
-    PAYMENT_URL,
-    APP_API_VERSION,
-} from './constants/constants.js';
+import { STRIPE_ERRORS, APP_API_VERSION } from './constants/constants.js';
+import { CreateSessionConfig } from './constants/constants.js';
 
 @Injectable()
 export class StripeService {
@@ -21,28 +18,36 @@ export class StripeService {
         });
     }
 
-    async createCheckoutSession(orderId: number, amount: number) {
-        const domainURL = this._configService.get('DOMAIN');
+    async createCheckoutSession(orderId: number, orderAmount: number) {
+        const {
+            payment_method_types,
+            mode,
+            currency,
+            successURL,
+            cancelURL,
+            quantity,
+            paymentTitle,
+        } = CreateSessionConfig;
+        const domainURL = this._configService.get<string>('DOMAIN');
 
         const session = await this.stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            mode: 'payment',
+            payment_method_types,
+            mode,
             line_items: [
                 {
                     price_data: {
-                        currency: 'pln',
+                        currency,
                         product_data: {
-                            name: `Order #${orderId}`,
+                            name: `${paymentTitle}${orderId}`,
                         },
-                        unit_amount: amount,
+                        unit_amount: orderAmount,
                     },
-                    quantity: 1,
+                    quantity,
                 },
             ],
-            success_url: `${domainURL}${PAYMENT_URL.SUCCESS}`,
-            cancel_url: `${domainURL}${PAYMENT_URL.FAILED}`,
+            success_url: `${domainURL}${successURL}`,
+            cancel_url: `${domainURL}${cancelURL}`,
 
-            expires_at: Math.floor(Date.now() / 1000) + 60 * 30,
             metadata: {
                 order_id: orderId.toString(),
             },

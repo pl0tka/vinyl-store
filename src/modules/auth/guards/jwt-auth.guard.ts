@@ -42,7 +42,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
         const canActivateResult = await super.canActivate(context);
         if (canActivateResult instanceof Observable) {
-            console.log('can activate result is observable');
             return await firstValueFrom(canActivateResult);
         }
 

@@ -4,8 +4,8 @@ import { CreateOrderDto } from './dto/create-order.dto.js';
 import { VinylService } from '../vinyl/vinyl.service.js';
 import { Vinyl } from 'src/database/entities/index.js';
 import { CreateOrderResponseDto } from './dto/create-order-response.dto.js';
-import { OrderStatus } from 'src/database/entities/constants/order-status.enum.js';
-import { ERROR_MESSAGES } from 'src/common/constants/constants.js';
+import { OrderStatus } from '../../database/entities/constants/order-status.enum.js';
+import { ERROR_MESSAGES } from '../../common/constants/constants.js';
 
 @Injectable()
 export class OrderService {

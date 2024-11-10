@@ -10,6 +10,10 @@ import { GetVinylsWithScoreAndReviewDto } from './dto/get-vinyls-with-score-and-
 export class VinylService {
     constructor(private readonly _vinylRepository: VinylRepository) {}
 
+    async findById(id: number) {
+        return await this._vinylRepository.findById(id);
+    }
+
     async findAllWithAvgScoreAndFirstReview(
         query: GetVinylsQueryDto
     ): Promise<GetVinylsWithScoreAndReviewDto[]> {

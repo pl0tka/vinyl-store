@@ -21,7 +21,7 @@ export class Vinyl {
     @Column({ length: 2000 })
     description: string;
 
-    @Column('decimal', { precision: 10, scale: 2 })
+    @Column({ type: 'decimal', precision: 10, scale: 2 })
     price: number;
 
     @Column({ type: 'varchar', length: 2048, nullable: true })

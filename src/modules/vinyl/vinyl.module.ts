@@ -10,5 +10,6 @@ import { ReviewModule } from '../review/review.module.js';
     imports: [TypeOrmModule.forFeature([Vinyl, Review]), ReviewModule],
     providers: [VinylService, VinylRepository],
     controllers: [VinylController],
+    exports: [VinylService],
 })
 export class VinylModule {}
