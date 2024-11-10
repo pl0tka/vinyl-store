@@ -12,6 +12,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard.js';
 import { GoogleAuthGuard } from './guards/google-auth.guard.js';
 import { Public } from '../../common/decorators/public.decorator.js';
 import { GoogleLoginDto } from './dto/google-login.dto.js';
+import { ExtractJwt } from 'passport-jwt';
 
 @Controller('auth')
 export class AuthController {
@@ -40,5 +41,11 @@ export class AuthController {
     @UseGuards(GoogleAuthGuard)
     async googleLoginCallback(@Request() req) {
         return await this._authService.logInGoogle(req.user as GoogleLoginDto);
+    }
+
+    @Post('logout')
+    async logout(@Request() req) {
+        const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+        return this._authService.logout(token);
     }
 }

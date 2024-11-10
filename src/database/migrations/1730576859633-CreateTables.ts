@@ -26,6 +26,9 @@ export class CreateTables1730576859633 implements MigrationInterface {
             `CREATE TABLE \`orders_vinyls_vinyls\` (\`ordersId\` int NOT NULL, \`vinylsId\` int NOT NULL, INDEX \`IDX_f281f271535bfb63ed59c327bd\` (\`ordersId\`), INDEX \`IDX_eab4825adee117f8e85dbdfdb3\` (\`vinylsId\`), PRIMARY KEY (\`ordersId\`, \`vinylsId\`)) ENGINE=InnoDB`
         );
         await queryRunner.query(
+            `CREATE TABLE \`token_blacklist\` (\`id\` int NOT NULL AUTO_INCREMENT, \`token\` varchar(255) NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
+        );
+        await queryRunner.query(
             `ALTER TABLE \`reviews\` ADD CONSTRAINT \`FK_824ac8e8ce880d78453bbdca9cb\` FOREIGN KEY (\`vinylId\`) REFERENCES \`vinyls\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`
         );
         await queryRunner.query(
@@ -92,5 +95,6 @@ export class CreateTables1730576859633 implements MigrationInterface {
             `DROP INDEX \`IDX_97672ac88f789774dd47f7c8be\` ON \`users\``
         );
         await queryRunner.query(`DROP TABLE \`users\``);
+        await queryRunner.query(`DROP TABLE \`token_blacklist\``);
     }
 }

@@ -14,6 +14,8 @@ export const ERROR_MESSAGES = {
     USER_WRONG_LOGIN_METHOD:
         'A user with this email already exists but is registered with a different login method',
     UNAUTHORIZED: 'Invalid credentials',
+    NO_TOKEN_PROVIDED: 'No token provided',
+    INVALID_TOKEN: 'Invalid token provided',
     ROLE_NOT_FOUND: 'Role not found',
     VINYL_NOT_FOUND: 'Vinyl not found',
     REVIEW_NOT_FOUND: 'Review not found',

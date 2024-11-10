@@ -14,11 +14,13 @@ import { JwtStrategy } from './strategies/jwt.strategy.js';
 import { RoleModule } from '../role/role.module.js';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard.js';
+import { TokenBlacklistModule } from '../token-blacklist/token-blacklist.module.js';
 
 @Module({
     imports: [
         UserModule,
         RoleModule,
+        TokenBlacklistModule,
         LoggerModule,
         ConfigModule,
         PassportModule,

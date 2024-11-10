@@ -17,6 +17,7 @@ import { Role as RoleEntity } from '../../database/entities/Role.js';
 import { Role } from '../../guards/roles.enum.js';
 import { GoogleLoginDto } from './dto/google-login.dto.js';
 import { v4 as uuidv4 } from 'uuid';
+import { TokenBlacklistService } from '../token-blacklist/token-blacklist.service.js';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +25,8 @@ export class AuthService {
         private readonly _logger: LoggerService,
         private readonly _userService: UserService,
         private readonly _roleService: RoleService,
-        private readonly _jwtService: JwtService
+        private readonly _jwtService: JwtService,
+        private readonly _tokenBlacklistService: TokenBlacklistService
     ) {
         this._logger.setContext(AuthService.name);
     }
@@ -120,5 +122,13 @@ export class AuthService {
         await this._userService.create(newUser);
 
         return await this.login(newUser);
+    }
+
+    async logout(token: string) {
+        try {
+            await this._tokenBlacklistService.blacklistToken(token);
+        } catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 }
