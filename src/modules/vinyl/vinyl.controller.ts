@@ -28,6 +28,7 @@ import { CreateReviewDto } from '../review/dto/create-review.dto.js';
 import { Review } from '../../database/entities/Review.js';
 import { GetReviewsQueryDto } from '../review/dto/get-reviews-query.dto.js';
 import { GetVinylsWithScoreAndReviewDto } from './dto/get-vinyls-with-score-and-review.dto.js';
+import { VinylDto } from './dto/vinyl.dto.js';
 
 @Controller('vinyls')
 export class VinylController {
@@ -36,8 +37,13 @@ export class VinylController {
         private readonly _reviewService: ReviewService
     ) {}
 
-    @Public()
     @Get()
+    async getAll(@Query() query: GetVinylsQueryDto): Promise<VinylDto[]> {
+        return await this._vinylService.findAll(query);
+    }
+
+    @Public()
+    @Get('public')
     async getAllWithAvgScoreAndFirstReview(
         @Query() query: GetVinylsQueryDto
     ): Promise<GetVinylsWithScoreAndReviewDto[]> {

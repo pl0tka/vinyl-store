@@ -6,19 +6,19 @@ export class GeneralQueryDto {
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
-    public page?: number;
+    page?: number;
 
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
-    public pageSize?: number;
+    pageSize?: number;
 
     @IsOptional()
-    public sortBy?: string;
+    sortBy?: string;
 
     @IsEnum(SortOrder)
     @IsOptional()
-    public sortOrder?: SortOrder = SortOrder.ASC;
+    sortOrder?: SortOrder = SortOrder.ASC;
 
     @IsOptional()
     filterBy?: Record<string, string>;

@@ -8,13 +8,19 @@ import { UpdateVinylDto } from './dto/update-vinyl.dto.js';
 import { PAGINATION } from '../../common/constants/query.constants.js';
 import { Review } from '../../database/entities/index.js';
 import { VinylWithScoreAndReview } from './interfaces/vinyl-wth-score-and-review.js';
+import { VinylQueryService } from './vinyl-query.service.js';
 
 @Injectable()
 export class VinylRepository {
     constructor(
         @InjectRepository(Vinyl)
-        private readonly _repository: Repository<Vinyl>
+        private readonly _repository: Repository<Vinyl>,
+        private readonly _vinylQueryService: VinylQueryService
     ) {}
+
+    async findAll(queryDto: GetVinylsQueryDto): Promise<Vinyl[] | null> {
+        return this._vinylQueryService.getVinylsWithQueryOptions(queryDto);
+    }
 
     async findAllWithAvgScoreAndFirstReview(
         queryDto: GetVinylsQueryDto

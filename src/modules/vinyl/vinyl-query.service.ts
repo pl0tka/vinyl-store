@@ -7,6 +7,9 @@ import { GeneralQueryDto } from '../../common/dto/query.dto.js';
 
 @Injectable()
 export class VinylQueryService extends QueryService {
+    protected allowedFilterFields = ['name', 'author'];
+    protected allowedSortFields = ['name', 'author', 'price'];
+
     constructor(
         @InjectRepository(Vinyl)
         private readonly _vinylRepository: Repository<Vinyl>
@@ -14,14 +17,10 @@ export class VinylQueryService extends QueryService {
         super();
     }
 
-    async findAllVinylsWithQueryOptions(
-        queryDto: GeneralQueryDto
-    ): Promise<Vinyl[]> {
-        return (
-            await this.findAllWithQueryOptions<Vinyl>(
-                this._vinylRepository,
-                queryDto
-            )
-        ).results;
+    async getVinylsWithQueryOptions(query: GeneralQueryDto): Promise<Vinyl[]> {
+        return this.findAllWithQueryOptions<Vinyl>(
+            this._vinylRepository,
+            query
+        );
     }
 }

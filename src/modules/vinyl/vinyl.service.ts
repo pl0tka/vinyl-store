@@ -26,6 +26,10 @@ export class VinylService {
         return await this._vinylRepository.findById(id);
     }
 
+    async findAll(query: GetVinylsQueryDto) {
+        return await this._vinylRepository.findAll(query);
+    }
+
     async findAllWithAvgScoreAndFirstReview(
         query: GetVinylsQueryDto
     ): Promise<GetVinylsWithScoreAndReviewDto[]> {

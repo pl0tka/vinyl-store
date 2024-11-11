@@ -6,6 +6,7 @@ import { Review, Vinyl } from '../../database/entities/index.js';
 import { VinylRepository } from './vinyl.repository.js';
 import { ReviewModule } from '../review/review.module.js';
 import { LoggerModule } from '../../logger/logger.module.js';
+import { VinylQueryService } from './vinyl-query.service.js';
 
 @Module({
     imports: [
@@ -13,7 +14,7 @@ import { LoggerModule } from '../../logger/logger.module.js';
         ReviewModule,
         LoggerModule,
     ],
-    providers: [VinylService, VinylRepository],
+    providers: [VinylService, VinylRepository, VinylQueryService],
     controllers: [VinylController],
     exports: [VinylService],
 })
