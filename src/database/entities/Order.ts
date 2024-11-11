@@ -7,7 +7,7 @@ import {
     ManyToMany,
 } from 'typeorm';
 import { User, Vinyl } from './index.js';
-import { OrderStatus } from './constants/order-status.enum.js';
+import { OrderStatus } from '../../common/constants/order-status.enum.js';
 
 @Entity({ name: 'orders' })
 export class Order {

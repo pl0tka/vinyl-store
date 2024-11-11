@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { OrderService } from '../modules/order/order.service.js';
 import { PaymentSuccessEvent } from '../events/payment-success.event.js';
-import { OrderStatus } from '../database/entities/constants/order-status.enum.js';
+import { OrderStatus } from '../common/constants/order-status.enum.js';
 import { MailerService } from '../modules/mailer/mailer.service.js';
 import { EVENTS } from '../events/constants/events.js';
 import { emailInfo } from '../modules/mailer/constants/emailInfo.js';

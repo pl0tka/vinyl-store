@@ -6,12 +6,14 @@ import { Order, User, Vinyl } from '../../database/entities/index.js';
 import { VinylModule } from '../vinyl/vinyl.module.js';
 import { StripeModule } from '../stripe/stripe.module.js';
 import { OrderRepository } from './order.repository.js';
+import { LoggerModule } from '../../logger/logger.module.js';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User, Vinyl, Order]),
         VinylModule,
         StripeModule,
+        LoggerModule,
     ],
     controllers: [OrderController],
     providers: [OrderService, OrderRepository],

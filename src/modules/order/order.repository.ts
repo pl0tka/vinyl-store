@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { Order, Vinyl } from '../../database/entities/index.js';
-import { OrderStatus } from 'src/database/entities/constants/order-status.enum.js';
+import { OrderStatus } from '../../common/constants/order-status.enum.js';
 
 @Injectable()
 export class OrderRepository {

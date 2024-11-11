@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
-import { Role, Review, Order, ChangeLog } from './index.js';
+import { Role, Review, Order } from './index.js';
 
 @Entity({ name: 'users' })
 export class User {
@@ -34,7 +34,4 @@ export class User {
         onDelete: 'CASCADE',
     })
     orders: Order[];
-
-    @OneToMany(() => ChangeLog, (changeLog) => changeLog.user)
-    changeLogs: ChangeLog[];
 }

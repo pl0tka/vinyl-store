@@ -28,7 +28,7 @@ export class ReviewRepository {
         vinylId: string,
         userId: string,
         createReviewDto: CreateReviewDto
-    ): Promise<void> {
+    ): Promise<Review> {
         const { score, comment } = createReviewDto;
         const newReview = this._repository.create({
             score,
@@ -37,7 +37,7 @@ export class ReviewRepository {
             vinyl: { id: Number(vinylId) },
         });
 
-        await this._repository.save(newReview);
+        return await this._repository.save(newReview);
     }
 
     async delete(id: string): Promise<DeleteResult> {

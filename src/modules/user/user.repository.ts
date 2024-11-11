@@ -40,9 +40,9 @@ export class UserRepository {
         });
     }
 
-    async create(user: User): Promise<void> {
+    async create(user: User): Promise<User> {
         const newUser = this._repository.create(user);
-        await this._repository.save(newUser);
+        return await this._repository.save(newUser);
     }
 
     async update(

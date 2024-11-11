@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Review, Vinyl } from '../../database/entities/index.js';
 import { VinylRepository } from './vinyl.repository.js';
 import { ReviewModule } from '../review/review.module.js';
+import { LoggerModule } from '../../logger/logger.module.js';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Vinyl, Review]), ReviewModule],
+    imports: [
+        TypeOrmModule.forFeature([Vinyl, Review]),
+        ReviewModule,
+        LoggerModule,
+    ],
     providers: [VinylService, VinylRepository],
     controllers: [VinylController],
     exports: [VinylService],

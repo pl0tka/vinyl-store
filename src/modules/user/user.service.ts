@@ -10,13 +10,17 @@ import { ERROR_MESSAGES } from '../../common/constants/constants.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { UserRelations } from './types/types.js';
 import { LoggerService } from '../../logger/logger.service.js';
+import { ActionType } from '../../database/entities/ChangeLog.js';
+import { ENTITIES } from '../../database/entities/constants/entities.js';
 
 @Injectable()
 export class UserService {
     constructor(
         private readonly _userRepository: UserRepository,
         private readonly _logger: LoggerService
-    ) {}
+    ) {
+        this._logger.setContext(UserService.name);
+    }
 
     async findByEmail(email: string): Promise<User | null> {
         return await this._userRepository.findByEmail(email);
@@ -49,7 +53,13 @@ export class UserService {
 
     async create(user: User): Promise<void> {
         try {
-            await this._userRepository.create(user);
+            const createdUser = await this._userRepository.create(user);
+            await this._logger.logToDB(
+                ActionType.CREATE,
+                ENTITIES.USER,
+                createdUser.id,
+                createdUser
+            );
         } catch (err) {
             if (err.code === 'ER_DUP_ENTRY') {
                 throw new ConflictException(ERROR_MESSAGES.USER_EMAIL_EXISTS);
@@ -69,6 +79,13 @@ export class UserService {
             if (updateResult.affected === 0) {
                 throw new NotFoundException(ERROR_MESSAGES.USER_NOT_FOUND);
             }
+
+            await this._logger.logToDB(
+                ActionType.UPDATE,
+                ENTITIES.USER,
+                id,
+                updateUserDto
+            );
         } catch (err) {
             this._logger.error(err.message);
             if (err instanceof NotFoundException) {
@@ -85,6 +102,13 @@ export class UserService {
             if (deleteResult.affected === 0) {
                 throw new NotFoundException(ERROR_MESSAGES.USER_NOT_FOUND);
             }
+
+            await this._logger.logToDB(
+                ActionType.DELETE,
+                ENTITIES.USER,
+                id,
+                null
+            );
         } catch (err) {
             this._logger.error(err.message);
             if (err instanceof NotFoundException) {

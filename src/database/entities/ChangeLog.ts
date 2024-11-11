@@ -1,12 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    JoinColumn,
-} from 'typeorm';
-import { User } from './index.js';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 export enum ActionType {
     CREATE = 'create',
@@ -22,20 +15,13 @@ export class ChangeLog {
     @Column({ type: 'enum', enum: ActionType })
     actionType: ActionType;
 
-    @Column()
+    @Column({ type: 'varchar' })
     entity: string;
 
-    @ManyToOne(() => User, (user) => user.changeLogs)
-    @JoinColumn({ name: 'userId' })
-    user: User;
-
-    @Column()
-    userId: string;
+    @Column({ type: 'varchar' })
+    referenceId: string;
 
     @Column({ type: 'json', nullable: true })
-    oldData: Record<string, any>;
-
-    @Column({ type: 'json' })
     newData: Record<string, any>;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

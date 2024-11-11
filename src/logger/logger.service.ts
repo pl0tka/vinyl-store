@@ -72,15 +72,13 @@ export class LoggerService implements LogService {
     async logToDB(
         actionType: ActionType,
         entity: string,
-        userId: string,
-        oldData: Record<string, any>,
+        referenceId: string | number,
         newData: Record<string, any>
     ) {
         const changeLog = new ChangeLog();
         changeLog.actionType = actionType;
         changeLog.entity = entity;
-        changeLog.userId = userId;
-        changeLog.oldData = oldData;
+        changeLog.referenceId = String(referenceId);
         changeLog.newData = newData;
 
         try {

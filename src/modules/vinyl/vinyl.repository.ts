@@ -7,7 +7,7 @@ import { CreateVinylDto } from './dto/create-vinyl.dto.js';
 import { UpdateVinylDto } from './dto/update-vinyl.dto.js';
 import { PAGINATION } from '../../common/constants/query.constants.js';
 import { Review } from '../../database/entities/index.js';
-import { GetVinylsWithScoreAndReviewDto } from './dto/get-vinyls-with-score-and-review.dto.js';
+import { VinylWithScoreAndReview } from './interfaces/vinyl-wth-score-and-review.js';
 
 @Injectable()
 export class VinylRepository {
@@ -18,11 +18,11 @@ export class VinylRepository {
 
     async findAllWithAvgScoreAndFirstReview(
         queryDto: GetVinylsQueryDto
-    ): Promise<GetVinylsWithScoreAndReviewDto[] | null> {
+    ): Promise<VinylWithScoreAndReview[] | null> {
         const page = queryDto.page || PAGINATION.DEFAULT_PAGE;
         const pageSize = queryDto.pageSize || PAGINATION.DEFAULT_PAGE_SIZE;
 
-        const vinyls: GetVinylsWithScoreAndReviewDto[] = await this._repository
+        const vinyls: VinylWithScoreAndReview[] = await this._repository
             .createQueryBuilder('vinyl')
             .leftJoinAndSelect('vinyl.reviews', 'review')
             .select([
@@ -53,9 +53,9 @@ export class VinylRepository {
         return await this._repository.findOneBy({ id });
     }
 
-    async create(vinyl: CreateVinylDto): Promise<void> {
+    async create(vinyl: CreateVinylDto): Promise<Vinyl> {
         const newVinyl = this._repository.create(vinyl);
-        await this._repository.save(newVinyl);
+        return await this._repository.save(newVinyl);
     }
 
     async update(

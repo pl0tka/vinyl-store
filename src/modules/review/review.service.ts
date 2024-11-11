@@ -10,6 +10,7 @@ import { Review } from '../../database/entities/index.js';
 import { ERROR_MESSAGES } from '../../common/constants/constants.js';
 import { GetReviewsQueryDto } from './dto/get-reviews-query.dto.js';
 import { ActionType } from '../../database/entities/ChangeLog.js';
+import { ENTITIES } from '../../database/entities/constants/entities.js';
 
 @Injectable()
 export class ReviewService {
@@ -40,20 +41,16 @@ export class ReviewService {
         createReviewDto: CreateReviewDto
     ): Promise<void> {
         try {
-            await this._reviewRepository.create(
+            const createdReview = await this._reviewRepository.create(
                 vinylId,
                 userId,
                 createReviewDto
             );
             await this._logger.logToDB(
                 ActionType.CREATE,
-                'Review',
-                userId,
-                null,
-                {
-                    vinylId,
-                    createReviewDto,
-                }
+                ENTITIES.REVIEW,
+                createdReview.id,
+                createdReview
             );
         } catch (err) {
             this._logger.error(err.message);
@@ -67,6 +64,12 @@ export class ReviewService {
             if (deleteResult.affected === 0) {
                 throw new NotFoundException(ERROR_MESSAGES.REVIEW_NOT_FOUND);
             }
+            await this._logger.logToDB(
+                ActionType.DELETE,
+                ENTITIES.REVIEW,
+                reviewId,
+                null
+            );
         } catch (err) {
             this._logger.error(err.message);
             if (err instanceof NotFoundException) {
