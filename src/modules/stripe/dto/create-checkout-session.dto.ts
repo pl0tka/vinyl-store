@@ -1,6 +1,9 @@
+import { ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CheckoutSessionDto } from './checkout-session.dto.js';
+
 export class CreateCheckoutSessionDto {
-    order: {
-        id: number;
-        price: number;
-    };
+    @ValidateNested()
+    @Type(() => CheckoutSessionDto)
+    order: CheckoutSessionDto;
 }

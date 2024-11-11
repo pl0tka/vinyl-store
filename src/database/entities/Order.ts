@@ -11,7 +11,7 @@ import { OrderStatus } from '../../common/constants/order-status.enum.js';
 
 @Entity({ name: 'orders' })
 export class Order {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
     @ManyToOne(() => User, (user) => user.orders)

@@ -6,33 +6,43 @@ import {
     MaxLength,
     Min,
 } from 'class-validator';
+import {
+    VALIDATION_ERRORS,
+    MAX_URL_LENGTH,
+    MIN_PRICE_NUMBER,
+    MAX_PRICE_NUMBER,
+    MAX_VINYL_LENGTH,
+    MAX_AUTHOR_LENGTH,
+    MAX_VINYL_DESC_LENGTH,
+    PRICE_DECIMAL_PLACES,
+} from '../../../common/constants/constants.js';
 
 export class UpdateVinylDto {
     @IsOptional()
-    @MaxLength(50)
+    @MaxLength(MAX_VINYL_LENGTH)
     @IsString()
     name?: string;
 
     @IsOptional()
-    @MaxLength(100)
+    @MaxLength(MAX_AUTHOR_LENGTH)
     @IsString()
     author?: string;
 
     @IsOptional()
-    @MaxLength(2000)
+    @MaxLength(MAX_VINYL_DESC_LENGTH)
     @IsString()
     description?: string;
 
     @IsOptional()
-    @Min(0.01)
-    @Max(999.99)
+    @Min(MIN_PRICE_NUMBER)
+    @Max(MAX_PRICE_NUMBER)
     @IsNumber(
-        { maxDecimalPlaces: 2 },
-        { message: 'Price must be a number with up to 2 decimal places' }
+        { maxDecimalPlaces: PRICE_DECIMAL_PLACES },
+        { message: VALIDATION_ERRORS.PRICE_INVALID_FORMAT }
     )
     price?: number;
 
     @IsOptional()
-    @MaxLength(2048)
+    @MaxLength(MAX_URL_LENGTH)
     coverImage?: string;
 }

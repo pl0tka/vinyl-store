@@ -6,15 +6,20 @@ import {
     MaxLength,
     Min,
 } from 'class-validator';
+import {
+    MIN_REVIEW_SCORE,
+    MAX_REVIEW_SCORE,
+    MAX_REVIEW_LENGTH,
+} from '../../../common/constants/constants.js';
 
 export class CreateReviewDto {
     @IsInt()
-    @Min(1)
-    @Max(5)
+    @Min(MIN_REVIEW_SCORE)
+    @Max(MAX_REVIEW_SCORE)
     score: number;
 
     @IsOptional()
-    @MaxLength(5000)
+    @MaxLength(MAX_REVIEW_LENGTH)
     @IsString()
     comment?: string;
 }

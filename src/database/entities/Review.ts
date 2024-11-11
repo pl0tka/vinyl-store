@@ -3,13 +3,13 @@ import { User, Vinyl } from './index.js';
 
 @Entity({ name: 'reviews' })
 export class Review {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
-    @Column()
+    @Column({ type: 'int' })
     score: number;
 
-    @Column({ length: 5000, nullable: true })
+    @Column({ type: 'varchar', length: 5000, nullable: true })
     comment: string;
 
     @ManyToOne(() => Vinyl, (vinyl) => vinyl.reviews)

@@ -1,22 +1,26 @@
 import { IsDate, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+    MAX_NAME_LENGTH,
+    MAX_URL_LENGTH,
+} from '../../../common/constants/constants.js';
 
 export class UpdateUserDto {
     @IsOptional()
-    @MaxLength(20)
+    @MaxLength(MAX_NAME_LENGTH)
     @IsString()
-    firstName: string;
+    firstName?: string;
 
     @IsOptional()
-    @MaxLength(20)
+    @MaxLength(MAX_NAME_LENGTH)
     @IsString()
-    lastName: string;
+    lastName?: string;
 
     @IsOptional()
     @IsDate()
-    birthday: Date;
+    birthday?: Date;
 
     @IsOptional()
-    @MaxLength(2048)
+    @MaxLength(MAX_URL_LENGTH)
     @IsString()
-    avatar: string;
+    avatar?: string;
 }

@@ -9,10 +9,10 @@ import { User } from './index.js';
 
 @Entity({ name: 'roles' })
 export class Role {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
-    @Column({ length: 50 })
+    @Column({ type: 'varchar', length: 50 })
     name: string;
 
     @ManyToMany(() => User, (user) => user.roles)

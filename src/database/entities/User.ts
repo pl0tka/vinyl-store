@@ -3,19 +3,19 @@ import { Role, Review, Order } from './index.js';
 
 @Entity({ name: 'users' })
 export class User {
-    @PrimaryColumn()
+    @PrimaryColumn({ type: 'varchar', length: 36 })
     id: string;
 
-    @Column({ length: 20 })
+    @Column({ type: 'varchar', length: 20 })
     firstName: string;
 
-    @Column({ length: 20 })
+    @Column({ type: 'varchar', length: 20 })
     lastName: string;
 
-    @Column({ length: 500, unique: true })
+    @Column({ type: 'varchar', length: 500, unique: true })
     email: string;
 
-    @Column({ length: 500, nullable: true })
+    @Column({ type: 'varchar', length: 500, nullable: true })
     password: string;
 
     @Column({ type: 'date', nullable: true })

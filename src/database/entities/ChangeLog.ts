@@ -9,7 +9,7 @@ export enum ActionType {
 
 @Entity({ name: 'change_logs' })
 export class ChangeLog {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
     @Column({ type: 'enum', enum: ActionType })
