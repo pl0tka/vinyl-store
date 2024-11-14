@@ -1,18 +1,14 @@
 import {
-    BadRequestException,
     Body,
     Controller,
     Delete,
     Get,
     HttpCode,
     HttpStatus,
-    InternalServerErrorException,
-    NotFoundException,
     Param,
     Patch,
     Post,
     Query,
-    Req,
     UseGuards,
 } from '@nestjs/common';
 import { VinylService } from './vinyl.service.js';
@@ -23,105 +19,66 @@ import { UpdateVinylDto } from './dto/update-vinyl.dto.js';
 import { Role } from '../../guards/roles.enum.js';
 import { Roles } from '../../guards/roles.decorator.js';
 import { RolesGuard } from '../../guards/roles.guard.js';
-import { ReviewService } from '../review/review.service.js';
-import { CreateReviewDto } from '../review/dto/create-review.dto.js';
-import { Review } from '../../database/entities/Review.js';
-import { GetReviewsQueryDto } from '../review/dto/get-reviews-query.dto.js';
-import { GetVinylsWithScoreAndReviewDto } from './dto/get-vinyls-with-score-and-review.dto.js';
+import { VinylsWithScoreAndReviewDto } from './dto/vinyls-with-score-and-review.dto.js';
 import { VinylDto } from './dto/vinyl.dto.js';
+import { API_TAGS } from '../../common/swagger/constants/api-tags.js';
+import { ApiTags } from '@nestjs/swagger';
+import {
+    SwaggerVinylGetAllPublic,
+    SwaggerVinylGetAll,
+    SwaggerVinylCreate,
+    SwaggerVinylDelete,
+    SwaggerVinylUpdate,
+} from '../../common/swagger/vinyl/vinyl.swagger.js';
 
+@ApiTags(API_TAGS.VINYLS)
 @Controller('vinyls')
 export class VinylController {
-    constructor(
-        private readonly _vinylService: VinylService,
-        private readonly _reviewService: ReviewService
-    ) {}
+    constructor(private readonly _vinylService: VinylService) {}
 
+    @SwaggerVinylGetAll()
     @Get()
     async getAll(@Query() query: GetVinylsQueryDto): Promise<VinylDto[]> {
         return await this._vinylService.findAll(query);
     }
 
+    @SwaggerVinylGetAllPublic()
     @Public()
     @Get('public')
     async getAllWithAvgScoreAndFirstReview(
         @Query() query: GetVinylsQueryDto
-    ): Promise<GetVinylsWithScoreAndReviewDto[]> {
+    ): Promise<VinylsWithScoreAndReviewDto[]> {
         return await this._vinylService.findAllWithAvgScoreAndFirstReview(
             query
         );
     }
 
+    @SwaggerVinylCreate()
     @UseGuards(RolesGuard)
     @Roles(Role.Admin)
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    async create(@Body() body: CreateVinylDto) {
+    async create(@Body() body: CreateVinylDto): Promise<void> {
         return await this._vinylService.create(body);
     }
 
+    @SwaggerVinylUpdate()
     @UseGuards(RolesGuard)
     @Roles(Role.Admin)
-    @Patch(':id')
-    async update(@Param('id') id: string, @Body() body: UpdateVinylDto) {
+    @Patch(':vinylId')
+    async update(
+        @Param('vinylId') id: string,
+        @Body() body: UpdateVinylDto
+    ): Promise<void> {
         return await this._vinylService.update(id, body);
     }
 
+    @SwaggerVinylDelete()
     @UseGuards(RolesGuard)
     @Roles(Role.Admin)
-    @Delete(':id')
+    @Delete(':vinylId')
     @HttpCode(HttpStatus.NO_CONTENT)
-    async delete(@Param('id') id: string) {
+    async delete(@Param('vinylId') id: string): Promise<void> {
         return await this._vinylService.delete(id);
-    }
-
-    @Get(':id/reviews')
-    async getReviewsByVinylId(
-        @Query() query: GetReviewsQueryDto,
-        @Param('id') vinylId: string
-    ): Promise<Review[]> {
-        try {
-            return await this._reviewService.findAllByVinylId(query, vinylId);
-        } catch (err) {
-            if (err instanceof BadRequestException) {
-                throw err;
-            }
-            throw new InternalServerErrorException();
-        }
-    }
-
-    @Post(':id/reviews')
-    async createReview(
-        @Param('id') vinylId: string,
-        @Req() req,
-        @Body() createReviewDto: CreateReviewDto
-    ) {
-        const userId: string = req.user.userId;
-
-        try {
-            await this._reviewService.create(vinylId, userId, createReviewDto);
-        } catch (err) {
-            if (err instanceof BadRequestException) {
-                throw err;
-            }
-            throw new InternalServerErrorException();
-        }
-    }
-
-    @UseGuards(RolesGuard)
-    @Roles(Role.Admin)
-    @Delete('/reviews/:reviewId')
-    async deleteReview(@Param('reviewId') reviewlId: string) {
-        try {
-            await this._reviewService.delete(reviewlId);
-        } catch (err) {
-            if (
-                err instanceof BadRequestException ||
-                err instanceof NotFoundException
-            ) {
-                throw err;
-            }
-            throw new InternalServerErrorException();
-        }
     }
 }

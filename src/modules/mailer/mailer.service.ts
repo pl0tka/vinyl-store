@@ -14,13 +14,13 @@ export class MailerService {
         private readonly _loggerService: LoggerService
     ) {
         this.transporter = nodemailer.createTransport({
-            host: this._configService.get<string>('NODEMAILER_HOST'),
-            port: this._configService.get<number>('NODEMAILER_PORT'),
-            secure: this._configService.get<boolean>('NODEMAILER_SECURE'),
+            service: this._configService.get<string>('NODEMAILER_SERVICE'),
             auth: {
                 user: this._configService.get<string>('NODEMAILER_USER'),
                 pass: this._configService.get<string>('NODEMAILER_PASS'),
             },
+            logger: true,
+            debug: true,
         });
         this._loggerService.setContext(MailerService.name);
     }

@@ -24,6 +24,11 @@ export const ERROR_MESSAGES = {
     EMAIL_SENDING_FAILED: 'Email sending failed',
 };
 
+// database errors
+export const DATABASE_ERROR_CODES = {
+    DUPLICATE_ENTRY: 'ER_DUP_ENTRY',
+};
+
 // hash password
 export const SALT_ROUNDS = 10;
 

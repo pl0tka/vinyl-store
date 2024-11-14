@@ -8,7 +8,7 @@ import { GetVinylsQueryDto } from './dto/get-vinyls-query.dto.js';
 import { CreateVinylDto } from './dto/create-vinyl.dto.js';
 import { UpdateVinylDto } from './dto/update-vinyl.dto.js';
 import { ERROR_MESSAGES } from '../../common/constants/constants.js';
-import { GetVinylsWithScoreAndReviewDto } from './dto/get-vinyls-with-score-and-review.dto.js';
+import { VinylsWithScoreAndReviewDto } from './dto/vinyls-with-score-and-review.dto.js';
 import { ActionType } from '../../database/entities/ChangeLog.js';
 import { LoggerService } from '../../logger/logger.service.js';
 import { ENTITIES } from '../../database/entities/constants/entities.js';
@@ -32,7 +32,7 @@ export class VinylService {
 
     async findAllWithAvgScoreAndFirstReview(
         query: GetVinylsQueryDto
-    ): Promise<GetVinylsWithScoreAndReviewDto[]> {
+    ): Promise<VinylsWithScoreAndReviewDto[]> {
         const res =
             await this._vinylRepository.findAllWithAvgScoreAndFirstReview(
                 query

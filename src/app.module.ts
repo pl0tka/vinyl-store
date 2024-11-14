@@ -14,6 +14,7 @@ import { MailerModule } from './modules/mailer/mailer.module.js';
 import { StripeModule } from './modules/stripe/stripe.module.js';
 import { LoggerModule } from './logger/logger.module.js';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ReviewModule } from './modules/review/review.module.js';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
         }),
         AuthModule,
         VinylModule,
+        ReviewModule,
         UserModule,
         RoleModule,
         OrderModule,

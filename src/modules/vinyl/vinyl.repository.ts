@@ -49,8 +49,8 @@ export class VinylRepository {
                     .limit(1);
             }, 'firstReviewComment')
             .groupBy('vinyl.id')
-            .skip((page - 1) * pageSize)
-            .take(pageSize)
+            .offset((page - 1) * pageSize)
+            .limit(pageSize)
             .getRawMany();
         return vinyls;
     }

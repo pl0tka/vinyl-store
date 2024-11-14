@@ -23,7 +23,7 @@ export class LoggerService implements LogService {
                 )
             ),
             transports: [
-                new transports.Console(),
+                new transports.Console({ level: 'info' }),
                 new transports.File({
                     filename: `${this._logFile}`,
                 }),
@@ -37,6 +37,7 @@ export class LoggerService implements LogService {
         if (this.context) {
             this.logger.clear();
             this.logger.add(
+                new transports.Console({ level: 'info' }),
                 new transports.File({
                     filename: `logs/${this.context}.log`,
                 })

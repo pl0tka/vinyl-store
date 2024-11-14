@@ -8,7 +8,14 @@ import { PaymentFailedEvent } from '../../events/payment-failed.event.js';
 import { CheckoutSessionQueryDto } from './dto/checkout-session-query.dto.js';
 import { PaymentStatus } from './constants/constants.js';
 import { EVENTS } from '../../events/constants/events.js';
+import { ApiTags } from '@nestjs/swagger';
+import { API_TAGS } from '../../common/swagger/constants/api-tags.js';
+import {
+    SwaggerStripeCreateCheckout,
+    SwaggerStripePaymentStatus,
+} from '../../common/swagger/stripe/stripe.swagger.js';
 
+@ApiTags(API_TAGS.STRIPE)
 @Controller('stripe')
 export class StripeController {
     constructor(
@@ -16,6 +23,7 @@ export class StripeController {
         private _eventEmitter: EventEmitter2
     ) {}
 
+    @SwaggerStripeCreateCheckout()
     @Post('checkout')
     async create(
         @Body() createCheckoutSessionDto: CreateCheckoutSessionDto
@@ -29,13 +37,16 @@ export class StripeController {
         return sessionUrl;
     }
 
+    @SwaggerStripePaymentStatus()
     @Public()
     @Get('payment-status')
-    async paymentSuccess(@Query() query: CheckoutSessionQueryDto) {
+    async paymentSuccess(
+        @Query() query: CheckoutSessionQueryDto
+    ): Promise<void> {
         const { session_id: sessionId, status } = query;
         const session = await this._stripeService.getSession(sessionId);
         const orderId = session.metadata.order_id;
-        const userEmail = session.customer_email;
+        const userEmail = session.customer_details.email;
 
         if (status === PaymentStatus.SUCCESS) {
             this._eventEmitter.emit(

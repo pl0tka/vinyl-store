@@ -12,6 +12,8 @@ import { UserRelations } from './types/types.js';
 import { LoggerService } from '../../logger/logger.service.js';
 import { ActionType } from '../../database/entities/ChangeLog.js';
 import { ENTITIES } from '../../database/entities/constants/entities.js';
+import { UserWithReviewsAndOrdersDto } from './dto/user-with-reviews-and-orders.dto.js';
+import { DATABASE_ERROR_CODES } from '../../common/constants/constants.js';
 
 @Injectable()
 export class UserService {
@@ -45,10 +47,30 @@ export class UserService {
         return await this._userRepository.findById(id, relationOptions);
     }
 
-    async findByIdWithReviewsAndOrders(id: string): Promise<User | null> {
+    async findByIdWithReviewsAndOrders(
+        id: string
+    ): Promise<UserWithReviewsAndOrdersDto | null> {
         const relationOptions: UserRelations[] = ['reviews', 'orders'];
+        try {
+            const user = await this._userRepository.findById(
+                id,
+                relationOptions
+            );
 
-        return await this._userRepository.findById(id, relationOptions);
+            if (!user) {
+                throw new NotFoundException(ERROR_MESSAGES.USER_NOT_FOUND);
+            }
+
+            return user as UserWithReviewsAndOrdersDto;
+        } catch (err) {
+            this._logger.error(err.message);
+            if (err instanceof NotFoundException) {
+                throw err;
+            } else {
+                this._logger.error(err.message);
+                throw new BadRequestException(err.message);
+            }
+        }
     }
 
     async create(user: User): Promise<void> {
@@ -61,7 +83,8 @@ export class UserService {
                 createdUser
             );
         } catch (err) {
-            if (err.code === 'ER_DUP_ENTRY') {
+            this._logger.error(err.message);
+            if (err.code === DATABASE_ERROR_CODES.DUPLICATE_ENTRY) {
                 throw new ConflictException(ERROR_MESSAGES.USER_EMAIL_EXISTS);
             }
 

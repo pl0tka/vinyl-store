@@ -81,13 +81,14 @@ export class AuthService {
         );
 
         if (!isPasswordCorrect) {
+            this._logger.error(ERROR_MESSAGES.UNAUTHORIZED);
             throw new UnauthorizedException(ERROR_MESSAGES.UNAUTHORIZED);
         }
 
         return user;
     }
 
-    async logInGoogle(googleLoginDto: GoogleLoginDto) {
+    async authGoogle(googleLoginDto: GoogleLoginDto) {
         if (!googleLoginDto) {
             throw new BadRequestException();
         }
