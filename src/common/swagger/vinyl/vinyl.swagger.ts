@@ -18,7 +18,7 @@ import { VinylsWithScoreAndReviewDto } from '../../../modules/vinyl/dto/vinyls-w
 
 export function SwaggerVinylGetAllPublic() {
     return applyDecorators(
-        ApiOperation({ summary: SUMMARY.VINYL.GET_ALL }),
+        ApiOperation({ summary: SUMMARY.VINYL.GET_ALL_PUBLIC }),
         ApiQuery({
             type: GeneralQueryDto,
             required: false,

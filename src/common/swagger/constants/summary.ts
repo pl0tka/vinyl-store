@@ -13,7 +13,7 @@ export const SUMMARY = {
     },
     VINYL: {
         GET_ALL_PUBLIC:
-            'Get all vinyls with an average score and first review comment, paginated',
+            'Get all vinyls with an average score and first review comment, paginated. No authentication required',
         GET_ALL: 'Get all vinyls with query parameters',
         CREATE: 'Create a vinyl',
         UPDATE: 'Update a vinyl',
